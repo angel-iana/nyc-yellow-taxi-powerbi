@@ -1,0 +1,11 @@
+# course data and recordings stay local
+docs/data/private/
+*.mp4
+*.zip
+
+# Office / Windows temp files
+~$*
+*.tmp
+Thumbs.db
+desktop.ini
+.DS_Store
