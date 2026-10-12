@@ -433,3 +433,73 @@ ratecode_id	trips	avg_income_per_trip	avg_minutes
 --Conclusion:
 -- q5f. Conclusion: 6,693 trips used the JFK flat fare (RatecodeID 2). They bring $61.29 per trip
 --     on average and last 27.81 minutes, compared with $16.38 and 12.23 minutes for all trips.
+
+-- q5h. Drop-offs by borough
+SELECT ISNULL(z.borough,'Not in lookup') AS borough, COUNT(*) AS dropoffs
+FROM core.trips t LEFT JOIN core.zone z ON z.location_id = t.do_location_id
+WHERE t.exclude_reason IS NULL
+GROUP BY ISNULL(z.borough,'Not in lookup') ORDER BY dropoffs DESC;
+-- Result:
+/*
+borough	dropoffs
+Manhattan	722657
+Brooklyn	62030
+Queens	55679
+Bronx	38998
+Unknown	9581
+Staten Island	2046
+EWR	532
+*/
+
+-- q5i. Average income per trip by pickup borough
+SELECT ISNULL(z.borough,'Not in lookup') AS borough,
+       CAST(SUM(t.driver_income)/COUNT(*) AS decimal(10,2)) AS avg_income_per_trip
+FROM core.trips t LEFT JOIN core.zone z ON z.location_id = t.pu_location_id
+WHERE t.exclude_reason IS NULL
+GROUP BY ISNULL(z.borough,'Not in lookup') ORDER BY avg_income_per_trip DESC;
+-- Result:
+/*
+EWR	74.86
+Staten Island	66.15
+Queens	33.68
+Brooklyn	28.53
+Bronx	27.47
+Unknown	21.39
+Manhattan	14.17
+*/
+
+-- q5h. Conclusion: Manhattan has 722,657 drop-offs, fewer than its 770,010 pickups (q5a). The other
+--     boroughs receive more trips than they send: Brooklyn 62,030 drop-offs vs 36,891 pickups,
+--     Bronx 38,998 vs 21,679, Queens 55,679 vs 53,869, Staten Island 2,046 vs 860, and Newark (EWR)
+--     532 vs 36. Many trips start in Manhattan and end outside it, so drivers often have to return
+--     to Manhattan to find the next passenger (return trips are not in the data).
+
+-- q5i. Conclusion: The borough with the most pickups pays the least per trip: Manhattan $14.17
+--     (86.37% of pickups, q5a). Trips that start outside Manhattan are worth much more: Queens
+--     $33.68, Brooklyn $28.53, Bronx $27.47, and Staten Island $66.15 (only 860 trips). EWR ($74.86)
+--     has only 36 trips, mostly negotiated fares (q5g), and is too small to draw a conclusion.
+
+-- q5j. Income per minute by pickup borough
+SELECT ISNULL(z.borough,'Not in lookup') AS borough,
+       COUNT(*) AS trips,
+       CAST(SUM(t.driver_income)/SUM(t.duration_min) AS decimal(10,3)) AS income_per_minute
+FROM core.trips t LEFT JOIN core.zone z ON z.location_id = t.pu_location_id
+WHERE t.exclude_reason IS NULL
+GROUP BY ISNULL(z.borough,'Not in lookup') ORDER BY income_per_minute DESC;
+--Result:
+/*
+borough	trips	income_per_minute
+EWR	36	9.348
+Unknown	8178	1.826
+Staten Island	860	1.708
+Queens	53869	1.567
+Bronx	21679	1.356
+Manhattan	770010	1.307
+Brooklyn	36891	1.259
+*/
+
+-- q5j. Conclusion: Income per minute changes less by borough than income per trip (q5i).
+--     Manhattan earns $1.307 per minute, close to the overall $1.339 (m3), and Brooklyn is the
+--     lowest at $1.259. Queens ($1.567) and Staten Island ($1.708, 860 trips) earn more per
+--     minute. EWR ($9.348) is an outlier: only 36 trips, mostly negotiated fares with almost no
+--     recorded distance or time (q5g), so it is not comparable.
