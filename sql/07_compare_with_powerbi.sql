@@ -139,7 +139,7 @@ weekday_num	weekday_name	vehicle_type	trips
     WHERE exclude_reason IS NULL
     GROUP BY weekday_num, weekday_name
     ORDER BY trips_per_day DESC;
-    -- Result: (re-run and paste - expected below)
+    -- Result: 
     /*
     weekday_num	weekday_name	trips	days	trips_per_day
     5	Friday	152806	9	16978.4
@@ -218,7 +218,7 @@ pickup_hour	trips	days	avg_trips_per_day
                 / COUNT(*) AS decimal(5,2)) AS pct_13_to_17
     FROM core.trips
     WHERE exclude_reason IS NULL;
-    -- Result: (run and paste - expected 35.44)
+    -- Result: 
 
 -- B2. Conclusion: The top 5 pickup hours are 13:00–17:00 and together hold 35.4% of trips;
 --     15:00 peaks with 1,076.8 trips per day (7.4%). Morning hours 07:00–09:00 hold only
