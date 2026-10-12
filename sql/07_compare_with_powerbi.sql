@@ -301,7 +301,9 @@ Big Car	4.16	0.00	NULL
     Big Car	4	0.00	50.00	NULL
     */
 
--- B4. Conclusion: Medium Car ($0.616/mi) and Private ($0.614/mi) are practically equal
---     (difference $0.002/mi). Unknown is much lower ($0.168/mi): its trips are almost 3x longer
---     (7.6 vs 2.8 mi) and fewer have a recorded tip (44% vs 58%). Big Car cannot be
+-- B4. Conclusion: On all trips, Medium Car ($0.616/mi) and Private ($0.614/mi) seem to lead and
+--     Unknown is much lower ($0.168/mi). But tips are recorded only for card payments (TLC data
+--     dictionary). With card payments only (08, B4c), tip per mile is similar for every type:
+--     Unknown $1.003, Private $0.944, Medium Car $0.925. Vehicle type has little effect on tips;
+--     the low value for Unknown came from trips without card payments. Big Car cannot be
 --     calculated: 4 trips with 0 miles.
