@@ -219,6 +219,8 @@ pickup_hour	trips	days	avg_trips_per_day
     FROM core.trips
     WHERE exclude_reason IS NULL;
     -- Result: 
+    /*pct_13_to_17
+35.44*/
 
 -- B2. Conclusion: The top 5 pickup hours are 13:00–17:00 and together hold 35.4% of trips;
 --     15:00 peaks with 1,076.8 trips per day (7.4%). Morning hours 07:00–09:00 hold only
