@@ -8,7 +8,16 @@ perspectives:
 
 Every number below comes from a SQL Server query and matches the Power BI report.
 
-![Zones page](images/zones.png)
+![Report walkthrough: Zones, Driver and Vendor pages](images/nyc-yellow-taxi-dashboard.gif)
+
+## How to open the files
+
+| File | What it is | How to open |
+|------|-----------|-------------|
+| [Presentation (PDF)](presentation/NYC_Yellow_Taxi_Analysis.pdf) | 10 slides with the answers and recommendations | Opens directly on GitHub |
+| [Presentation (PowerPoint)](presentation/NYC_Yellow_Taxi_Analysis.pptx) | Same slides, with speaker notes | Click **Download raw file**, open in PowerPoint |
+| [Power BI report](report/nyc-yellow-taxi.pbix) | 4 report pages plus check pages | Click **Download raw file**, open in Power BI Desktop |
+| [SQL scripts](sql/) | Data checks and the queries behind every number | Open in SSMS or read on GitHub |
 
 ## Key findings
 
@@ -48,7 +57,8 @@ them use a negotiated fare (RatecodeID 5) with almost no distance recorded.
 
 NYC Taxi & Limousine Commission (TLC) yellow taxi trip records, provided by
 NewTech Academy: 898,131 trips in two monthly files, plus a lookup of 265 taxi
-zones. The trip files are not stored in this repository. Column meanings are in
+zones. The raw CSV files are not stored in this repository; the Power BI file
+contains the imported data. Column meanings are in
 [docs/data-dictionary.md](docs/data-dictionary.md).
 
 **Check against official figures.** TLC reports 11,237 trips per day in May 2020
@@ -92,6 +102,12 @@ every decision stays visible.
 | Zones | Map of the 263 taxi zones with a metric selector (pickups, drop-offs, income per trip, income per minute) and a borough ▸ zone matrix |
 | Checks | Each measure next to its SQL result |
 
+![Zones page](images/zones.png)
+
+![Vendor page](images/vendor.png)
+
+![Driver page](images/driver.png)
+
 ## Repository structure
 
 ```
@@ -116,6 +132,7 @@ step-by-step guide and reviewer.
 | SQL | Ran every script in SSMS, checked each result and approved the conclusions | Wrote the scripts and drafted the conclusions from the results |
 | Power BI | Built the model, measures and all report pages; checked every measure against SQL | Proposed DAX measures, page layouts and formatting; reviewed screenshots |
 | Map | Converted the TLC zone shapefile to GeoJSON (mapshaper) and built the Azure Maps visual | Gave the conversion steps and checked the file |
+| Presentation | Replaced the map images, adjusted the layout, checked every number and exported the final deck | Drafted the slide structure, text, speaker notes and a model deck |
 | Documentation | Reviewed and approved all text | Drafted the README, data dictionary and data quality report |
 | Version control | All commits and pushes | Step-by-step instructions |
 
