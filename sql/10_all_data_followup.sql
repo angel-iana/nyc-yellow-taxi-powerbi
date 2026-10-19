@@ -128,6 +128,18 @@ Wednesday	3
 Saturday	3
 */
 
+-- d8. Tip per mile, card payments only, all vs excl (card on the Driver page)
+SELECT CAST(SUM(tip_amount) / NULLIF(SUM(trip_distance), 0) AS decimal(10,3)) AS tip_per_mile_card_all,
+       CAST(SUM(CASE WHEN exclude_reason IS NULL THEN tip_amount END)
+            / NULLIF(SUM(CASE WHEN exclude_reason IS NULL THEN trip_distance END), 0) AS decimal(10,3)) AS tip_per_mile_card_excl
+FROM core.trips
+WHERE payment_type_id = 1;
+-- Result: 
+/*
+tip_per_mile_card_all	tip_per_mile_card_excl
+0.944	0.945
+*/
+
 -- Conclusions: 
 -- d1. One trip drives both the Q3 and the q6 changes: Monday 2020-05-04, 20:00, Lincoln Square East
 --     (Manhattan), $429,562.25, 0 miles, 0.9 min, payment type 3 (no charge). Without it, Monday's
@@ -146,3 +158,5 @@ Saturday	3
 -- d7. The 23 out-of-period trips have no weekday in the 61-day calendar, so Power BI leaves them out
 --     of the weekday rows but keeps them in the total. Sunday is 9,672.2 in the report (9,673.0 when
 --     they are counted by their own date: 7 of the 23 fall on a Sunday).
+-- d8. Tip per mile on card payments is $0.944 with all trips and $0.945 without flagged trips:
+--     the extreme values do not change the tip answer.
