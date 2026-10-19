@@ -12,12 +12,13 @@ Every number is checked against a SQL Server query.
 | File | Open |
 |------|------|
 | [Power BI report](report/nyc-yellow-taxi.pbix) | Download raw file → Power BI Desktop |
-| [Presentation (PDF and PowerPoint)](presentation/) | PDF opens on GitHub; PowerPoint: download raw file |
+| [Presentation, all records (PDF)](presentation/A_all-data/NYC_Yellow_Taxi_Analysis.pdf) · [PowerPoint](presentation/A_all-data/NYC_Yellow_Taxi_Analysis.pptx) | PDF opens on GitHub; PowerPoint: download raw file |
+| [Presentation, extreme values excluded](presentation/B_extremes-excluded/) | Same format |
 | [SQL checks](sql/) | SSMS or read on GitHub |
 
 ## Answers
 
-All records, as required by the project brief.
+All 898,131 records are used, as required by the project brief.
 
 | # | Question | Answer |
 |---|----------|--------|
@@ -40,18 +41,17 @@ Walkthrough of the pages without extreme values:
 
 </details>
 
-## Bonus: what the extreme values change
+## Extreme values: a second view and a comparison
 
-**6,608 records (0.74%)** have impossible values: negative fare, duration of 0
+On my own initiative I also built report pages and a presentation without the
+**6,608 records (0.74%)** with impossible values: negative fare, duration of 0
 or less or over 5 hours, distance over 200 miles, fare over $1,000, or a date
-outside May–June. They are **flagged, not deleted**. The report adds:
+outside May–June. The records are **flagged, not deleted**; those pages are
+marked *excl.* in the report.
 
-- **View B:** the same pages without these records (pages marked *excl.*)
-- **View C:** a comparison page
-
-**Result:** 4 of 6 answers do not change. Questions 3 and 6 change, each
-because of **one single record**. Averages based on time and distance move most:
-average speed +49.4%, minutes per trip +10.1%.
+Finally, a comparison page shows what changes: **4 of 6 answers stay the same.**
+Questions 3 and 6 change, each because of **one single record**. Averages based
+on time and distance move most: average speed +49.4%, minutes per trip +10.1%.
 
 ![Comparison page](images/C/comparison.png)
 
@@ -72,7 +72,7 @@ Built by Angel Iana with an AI assistant (Claude, by Anthropic) used as a guide 
 | Project decisions, own questions, keeping all records plus the two extra views | Proposed cleaning rules, flag column and page structure |
 | Ran and checked every SQL script | Wrote SQL scripts and drafted conclusions |
 | Built the model, measures, all pages and the map; checked every number against SQL | Proposed DAX measures and layouts; reviewed screenshots |
-| Final presentation, all commits | Drafted README, slide text and a model deck |
+| Presentations (reviewed and finalised), all commits | Drafted README, slide text and the decks |
 
 **Tools:** Power BI Desktop · Power Query · DAX · Azure Maps · SQL Server · mapshaper
 **Sources:** [TLC data dictionary](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf) · [TLC monthly indicators](https://www.nyc.gov/assets/tlc/downloads/csv/data_reports_monthly.csv) · [TLC taxi zones](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
