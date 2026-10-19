@@ -140,6 +140,30 @@ tip_per_mile_card_all	tip_per_mile_card_excl
 0.944	0.945
 */
 
+-- d9. Delta % computed from unrounded values (income per minute, tip per mile on card payments)
+SELECT CAST(100.0 * ( (SUM(driver_income) / SUM(duration_min))
+                    - (SUM(CASE WHEN exclude_reason IS NULL THEN driver_income END)
+                       / SUM(CASE WHEN exclude_reason IS NULL THEN duration_min END)) )
+            / (SUM(CASE WHEN exclude_reason IS NULL THEN driver_income END)
+               / SUM(CASE WHEN exclude_reason IS NULL THEN duration_min END)) AS decimal(6,2)) AS delta_pct_income_per_min
+FROM core.trips;
+
+SELECT CAST(100.0 * ( (SUM(tip_amount) / SUM(trip_distance))
+                    - (SUM(CASE WHEN exclude_reason IS NULL THEN tip_amount END)
+                       / SUM(CASE WHEN exclude_reason IS NULL THEN trip_distance END)) )
+            / (SUM(CASE WHEN exclude_reason IS NULL THEN tip_amount END)
+               / SUM(CASE WHEN exclude_reason IS NULL THEN trip_distance END)) AS decimal(6,2)) AS delta_pct_tip_per_mile_card
+FROM core.trips
+WHERE payment_type_id = 1;
+-- Result: 
+
+/*
+  delta_pct_income_per_min
+-7.06
+delta_pct_tip_per_mile_card
+-0.17
+*/
+
 -- Conclusions: 
 -- d1. One trip drives both the Q3 and the q6 changes: Monday 2020-05-04, 20:00, Lincoln Square East
 --     (Manhattan), $429,562.25, 0 miles, 0.9 min, payment type 3 (no charge). Without it, Monday's
@@ -160,3 +184,5 @@ tip_per_mile_card_all	tip_per_mile_card_excl
 --     they are counted by their own date: 7 of the 23 fall on a Sunday).
 -- d8. Tip per mile on card payments is $0.944 with all trips and $0.945 without flagged trips:
 --     the extreme values do not change the tip answer.
+-- d9. Delta % from unrounded values: income per minute -7.06%, tip per mile (card) -0.17%.
+--     Rounded to one decimal (-7.1%, -0.2%) they match the Power BI Comparison table.
